@@ -1,11 +1,13 @@
-import React from 'react';
-import logo from './logo.svg';
+import { Provider } from 'react-redux';
 import './assets/scss/App.scss';
 
-function App() {
-  return (
-    <div>Hellow world</div>
-  );
-}
+import { store } from './redux/store';
+import { AppRouter } from './routers/AppRouter';
 
-export default App;
+export const App = (): JSX.Element => {
+	return (
+		<Provider store={ store }>
+			<AppRouter />
+		</Provider>
+	);
+};
