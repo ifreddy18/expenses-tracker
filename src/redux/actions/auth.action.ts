@@ -1,6 +1,6 @@
 import { ThunkDispatch } from 'redux-thunk';
 import { ReduxAction, User } from '../../interfaces';
-import loginService from '../../services/login';
+import authService from '../../services/auth';
 import { types } from '../types';
 
 
@@ -10,7 +10,7 @@ export const startLoginEmailPassword = (email: string, password: string) => {
         let userTemp: User;
 
         try {
-            const { data: { user, token } } = await loginService.login(email, password)
+            const { data: { user, token } } = await authService.login(email, password)
 
             userTemp = {
                 uid: user.uid,
@@ -41,6 +41,20 @@ export const startLogout = () => {
     }
 }
 
+export const startGetAuthState = () => {
+    return async(dispatch: ThunkDispatch<{}, {}, ReduxAction>): Promise<void> => {
+
+        try {
+            
+            const { data: { uid, email, name:displayName } } = await authService.getAuthState();
+            dispatch( getAuthStateAction({ uid, email, displayName }) )
+
+        } catch(error) {
+            console.log(error);
+        }
+    }
+};
+
 
 const loginAction = (user: User): ReduxAction => ({
     type: types.authLogin,
@@ -49,5 +63,10 @@ const loginAction = (user: User): ReduxAction => ({
 
 const logoutAction = (): ReduxAction => ({
     type: types.authLogout
+});
+
+const getAuthStateAction = (user: User): ReduxAction => ({
+    type: types.authGetState,
+    payload: user
 });
 

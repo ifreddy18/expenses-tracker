@@ -1,5 +1,7 @@
 import { useDispatch } from 'react-redux';
-import { startLogout } from '../../redux/actions/auth.action';
+import { Navbar } from '../../components/shared/Navbar';
+import { startLogout, startGetAuthState } from '../../redux/actions/auth.action';
+import { useEffect } from 'react';
 
 export const DashboardScreen = () => {
 	
@@ -9,8 +11,13 @@ export const DashboardScreen = () => {
 		dispatch( startLogout() );
 	};
 
+	useEffect(() => {
+		dispatch( startGetAuthState() );
+	}, [])
+	
 	return (
 		<div>
+			<Navbar />
 			<h1>Dashboard</h1>
 
 			<button onClick={() => handleLogout() }>Logout</button>
